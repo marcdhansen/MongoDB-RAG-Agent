@@ -421,79 +421,87 @@ The MVP is considered successful when users can:
 
 ## Implementation Phases
 
-### Phase 1: Core Infrastructure
+### Phase 1: Project Scaffolding & Configuration ✅ COMPLETE
 
-**Goal:** Establish MongoDB connection, basic data models, and configuration system
+**Goal:** Establish project foundation with package management and configuration system
 
 **Deliverables:**
 - ✅ Project structure with UV package management
-- ✅ MongoDB client with Motor async driver
 - ✅ Settings system with Pydantic
 - ✅ Environment variable configuration
-- ✅ Connection pooling and error handling
-- ✅ Basic logging setup
-- ✅ MongoDB connection utilities
+- ✅ LLM/embedding provider setup
+- ✅ Configuration validation script
+- ✅ MongoDB Atlas cluster setup documentation
 
 **Validation Criteria:**
-- Can connect to MongoDB Atlas
-- Settings load from `.env` file
-- Connection maintains stable async operations
-- Proper error handling for connection failures
+- ✅ Dependencies install successfully with `uv sync`
+- ✅ Settings load from `.env` file
+- ✅ Configuration validation passes
+- ✅ MongoDB connection string configured
 
 **Key Files:**
 - `pyproject.toml` (UV configuration)
 - `src/settings.py`
 - `src/providers.py` (LLM/embedding client setup)
+- `src/test_config.py` (validation script)
 - `.env.example`
+- `README.md` (setup instructions)
 
 ---
 
-### Phase 2: Document Ingestion Pipeline
+### Phase 2: Document Ingestion Pipeline ⏳ NEXT
 
 **Goal:** Build complete ingestion pipeline from documents to embedded chunks in MongoDB
 
 **Deliverables:**
-- ✅ Docling integration for multi-format conversion
-- ✅ HybridChunker wrapper preserving document structure
-- ✅ Embedding generator with batch processing
-- ✅ MongoDB inserter for documents and chunks
-- ✅ Document/chunk two-collection pattern
-- ✅ Metadata extraction and storage
-- ✅ CLI for ingestion with progress tracking
-- ✅ Audio transcription support
+- Docling integration for multi-format conversion
+- HybridChunker wrapper preserving document structure
+- Embedding generator with batch processing
+- MongoDB connection with PyMongo async driver
+- MongoDB inserter for documents and chunks
+- Document/chunk two-collection pattern
+- Metadata extraction and storage
+- CLI for ingestion with progress tracking
+- Audio transcription support
+- Search index creation instructions
 
 **Validation Criteria:**
-- Successfully processes 100+ mixed-format documents
+- Successfully processes 10+ mixed-format documents
 - Chunks average 400-600 tokens (fits embedding limits)
 - Document-chunk relationships properly established
 - Embeddings generated for all chunks
+- Data stored in MongoDB Atlas (`rag_db.documents` and `rag_db.chunks`)
+- Vector and full-text search indexes created in Atlas UI
 - Ingestion completes without crashes on errors
 - Progress visible to user
 
 **Key Files:**
-- `src/ingestion/chunker.py` (adapted from examples)
-- `src/ingestion/embedder.py` (adapted from examples)
+- `src/ingestion/chunker.py`
+- `src/ingestion/embedder.py`
 - `src/ingestion/ingest.py` (MongoDB implementation)
+- `src/dependencies.py` (MongoDB connection utilities)
 - `src/ingestion/__init__.py`
+
+**Important Note:** This phase includes MongoDB connection setup because we need it for ingestion. Search indexes are created manually in Atlas UI after data is populated.
 
 ---
 
-### Phase 3: Search Implementation
+### Phase 3: Search Tools Implementation
 
 **Goal:** Implement semantic and hybrid search tools using MongoDB aggregation pipelines
 
 **Deliverables:**
-- ✅ Semantic search using `$vectorSearch`
-- ✅ Hybrid search using `$rankFusion`
-- ✅ Document lookup for source attribution
-- ✅ Score extraction and normalization
-- ✅ Fuzzy matching configuration
-- ✅ SearchResult Pydantic models
-- ✅ Error handling for missing indexes
-- ✅ Tool function wrappers for agent
+- Semantic search using `$vectorSearch`
+- Hybrid search using `$rankFusion`
+- Document lookup for source attribution
+- Score extraction and normalization
+- Fuzzy matching configuration
+- SearchResult Pydantic models
+- Error handling for missing indexes
+- Tool function wrappers for agent
 
 **Validation Criteria:**
-- Semantic search returns relevant results
+- Semantic search returns relevant results from ingested data
 - Hybrid search combines vector + text scores
 - Source document info included in results
 - Queries complete in <2 seconds
@@ -501,8 +509,10 @@ The MVP is considered successful when users can:
 - Graceful handling of empty results
 
 **Key Files:**
-- `src/tools.py` (MongoDB implementation)
+- `src/tools.py` (MongoDB search implementation)
 - `src/models.py` (SearchResult and other Pydantic models)
+
+**Prerequisites:** Phase 2 must be complete with data in MongoDB and search indexes created.
 
 ---
 
@@ -511,15 +521,14 @@ The MVP is considered successful when users can:
 **Goal:** Build Pydantic AI agent and conversational CLI interface
 
 **Deliverables:**
-- ✅ Pydantic AI agent with search tools
-- ✅ StateDeps dependency injection
-- ✅ System prompts for agent behavior
-- ✅ MongoDB dependencies class
-- ✅ Rich-based CLI with streaming
-- ✅ Tool call visibility
-- ✅ Message history management
-- ✅ Special commands (info, clear, exit)
-- ✅ Error handling and user feedback
+- Pydantic AI agent with search tools
+- StateDeps dependency injection
+- System prompts for agent behavior
+- Rich-based CLI with streaming
+- Tool call visibility
+- Message history management
+- Special commands (info, clear, exit)
+- Error handling and user feedback
 
 **Validation Criteria:**
 - Agent responds conversationally
@@ -530,10 +539,11 @@ The MVP is considered successful when users can:
 - Handles multiple LLM providers
 
 **Key Files:**
-- `src/agent.py` (adapted from examples)
-- `src/cli.py` (adapted from examples)
-- `src/dependencies.py` (MongoDB implementation)
-- `src/prompts.py` (adapted from examples)
+- `src/agent.py`
+- `src/cli.py`
+- `src/prompts.py`
+
+**Prerequisites:** Phase 3 must be complete with working search tools.
 
 ---
 
@@ -542,29 +552,26 @@ The MVP is considered successful when users can:
 **Goal:** Ensure system reliability, create user documentation, and validate against success criteria
 
 **Deliverables:**
-- ✅ Unit tests for search functions
-- ✅ Integration tests for ingestion pipeline
-- ✅ Test fixtures with sample documents
-- ✅ README with setup instructions
-- ✅ Environment configuration guide
-- ✅ MongoDB Atlas setup tutorial
-- ✅ Troubleshooting guide
-- ✅ Performance benchmarks
-- ✅ Example queries and expected results
+- Unit tests for search functions
+- Integration tests for ingestion pipeline
+- Test fixtures with sample documents
+- Comprehensive troubleshooting guide
+- Performance benchmarks
+- Example queries and expected results
 
 **Validation Criteria:**
 - All tests pass consistently
-- Documentation enables new user setup in <30 minutes
-- Performance meets criteria (response time, throughput)
 - System handles edge cases gracefully
+- Performance meets criteria (response time, throughput)
 - Common issues have documented solutions
 
 **Key Files:**
-- `README.md`
-- `docs/SETUP.md`
-- `docs/MONGODB_ATLAS.md`
-- `docs/TROUBLESHOOTING.md`
-- `tests/` directory
+- `tests/test_search.py`
+- `tests/test_ingestion.py`
+- `tests/fixtures/`
+- `README.md` (updated with usage examples)
+
+**Prerequisites:** Phases 1-4 complete.
 
 ## Leveraging Existing Examples
 

@@ -4,6 +4,7 @@ version = "0.1.0"
 description = "Agentic RAG system with MongoDB Atlas Vector Search"
 requires-python = ">=3.10"
 dependencies = [
+    "numpy<2",
     "pydantic>=2.10.0",
     "pydantic-settings>=2.7.0",
     "pydantic-ai>=0.1.0",

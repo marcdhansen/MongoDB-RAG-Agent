@@ -110,7 +110,7 @@ In MongoDB Atlas, go to **Database** → **Search and Vector Search** → **Crea
     {
       "type": "vector",
       "path": "embedding",
-      "numDimensions": 1536,
+      "numDimensions": 3072,
       "similarity": "cosine"
     }
   ]

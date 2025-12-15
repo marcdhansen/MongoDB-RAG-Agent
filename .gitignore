@@ -45,3 +45,6 @@ uv.lock
 
 # Logs
 *.log
+
+# debug output
+err.out
